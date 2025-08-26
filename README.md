@@ -23,17 +23,14 @@ This repository contains the shared Renovate configuration for all repositories 
    - **GitHub Actions** → grouped PRs  
    - **Docker base images** → grouped PRs  
    - **Minor dependencies** → grouped PRs  
-   - **Major upgrades** → separate PRs  
+   - **Major upgrades** → separate PRs 
 
-3. **Private NuGet Support**  
-   - Uses the `NUGET_FEED_TOKEN` secret to access private GitHub Packages feeds.  
-
-4. **Scheduling & Limits**  
+3. **Scheduling & Limits**  
    - Weekly update schedule.  
    - PR concurrency limits (`prConcurrentLimit`) to avoid CI flooding.  
    - Automerge restricted to work hours: 10am–4pm London time.  
 
-5. **Security & Labels**  
+4. **Security & Labels**  
    - Security patches auto-labeled `security`.  
    - Major updates labeled `major`.  
    - All Renovate PRs labeled `renovate` and `dependencies`.  
