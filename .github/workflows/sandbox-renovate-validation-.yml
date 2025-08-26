@@ -1,0 +1,49 @@
+name: Sandbox Renovate PR Validation
+
+on:
+  pull_request:
+    paths:
+      - "default.json"
+  workflow_dispatch:
+
+jobs:
+  sandbox-renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install Renovate CLI
+        run: npm install -g renovate
+
+      - name: Validate Renovate configuration
+        run: |
+          echo "Validating Renovate config..."
+          if [ -f default.json ]; then
+            renovate-config-validator default.json
+          else
+            echo "No Renovate config found!"
+            exit 1
+          fi
+
+      - name: Post dry-run result as PR comment
+        if: github.event_name == 'pull_request'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### Renovate Sandbox Dry-Run Results
+            <details>
+            <summary>Click to expand</summary>
+      
+            ```
+            ${{ steps.renovate.outputs.stdout }}
+            ```
+            </details>
+
